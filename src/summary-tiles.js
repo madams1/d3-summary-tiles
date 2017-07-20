@@ -55,7 +55,7 @@ export default function() {
             tooltipWidth = 180,
             wrapTooltip = false,
             tooltipInfo = null,
-            nullValueTooltips = true,
+            nullValueTooltips = false,
             pairwiseJoinText = " \u2014 ",
             numberFormat = ",";
 
@@ -733,11 +733,9 @@ export default function() {
             return this;
         };
 
-        exports.verticalLegend = function(_) {
-            if (!arguments.length) {
-                return verticalLegend;
-            }
-            verticalLegend = _;
+        exports.verticalLegend = function() {
+
+            verticalLegend = true;
 
             return this;
         };
