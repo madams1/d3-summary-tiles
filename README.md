@@ -2,7 +2,7 @@
 
 ## Installing
 
-If you use NPM, `npm install d3-summary-tiles`. Otherwise, download the [latest release](https://github.com/d3/d3-summary-tiles/releases/latest).
+If you use NPM, `npm install d3-summary-tiles`. Otherwise, download the [latest release](https://github.com/madams1/d3-summary-tiles/releases/latest).
 
 ## API Reference
 
