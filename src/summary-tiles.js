@@ -453,7 +453,7 @@ export default function() {
                 .classed("st_legend", true);
 
             legendScale = d3.scaleLinear()
-                .domain(reverseColorScale ? fillDomain.reverse() : fillDomain)
+                .domain(reverseColorScale ? (verticalLegend ? fillDomain : fillDomain.reverse()) : fillDomain)
                 .range([0, legDim[0]]);
 
             if (showLegendIndicator) {
