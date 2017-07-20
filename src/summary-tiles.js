@@ -606,6 +606,15 @@ export default function() {
             return this;
         };
 
+        exports.fillDomain = function(_) {
+            if (!arguments.length) {
+                return fillDomain;
+            }
+            fillDomain = _;
+
+            return this;
+        };
+
         exports.width = function(_) {
             if (!arguments.length) {
                 return width;
