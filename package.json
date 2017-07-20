@@ -5,7 +5,8 @@
   "keywords": [
     "d3",
     "d3-module",
-    "d3-summary-tiles"
+    "d3-summary-tiles",
+    "tiles"
   ],
   "license": "BSD-3-Clause",
   "main": "build/d3-summary-tiles.js",
