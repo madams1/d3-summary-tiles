@@ -6,4 +6,4 @@ If you use NPM, `npm install d3-summary-tiles`. Otherwise, download the [latest 
 
 ## API Reference
 
-<a href="#summary-tiles" name="summary-tiles">#</a> <b>summary-tiles</b>()
+TBD
