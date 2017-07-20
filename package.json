@@ -23,6 +23,9 @@
     "postpublish": "zip -j build/d3-summary-tiles.zip -- LICENSE README.md build/d3-summary-tiles.js build/d3-summary-tiles.min.js"
   },
   "dependencies": {
+    "d3-selection": "^1.1.0"
+  },
+  "devDependencies": {
     "d3-array": "^1.2.0",
     "d3-axis": "^1.0.8",
     "d3-collection": "^1.0.4",
@@ -30,12 +33,9 @@
     "d3-scale": "^1.0.6",
     "d3-scale-chromatic": "^1.1.1",
     "d3-selection": "^1.1.0",
-    "d3-transition": "^1.1.0"
-  },
-  "devDependencies": {
+    "d3-transition": "^1.1.0",
     "rollup": "0.27",
     "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-uglify": "^2.0.1",
     "tape": "4",
     "uglify-es": "^3.0.25"
   }
