@@ -76,44 +76,7 @@ export default function() {
 
         function exports(_selection) {
             _selection.each(function(_data) {
-
-                // get unique x and y values to create labels
-                xTickLabs = [...new Set(_data.map(d => d[x]))];
-                yTickLabs = [...new Set(_data.map(d => d[y]))];
-
-                xNum = xTickLabs.length;
-                yNum = yTickLabs.length;
-
-                width = xNum * tileWidth + margin.left + margin.right;
-                height = yNum * tileHeight + margin.top + margin.bottom;
-
-                // add x and y indexes to data to order/layout tiles
-                let xRef = [];
-                xTickLabs.forEach( (d, i) => {
-                    let ref = {xIndex: i};
-                    ref[x] = d;
-
-                    xRef.push(ref);
-                });
-
-                let yRef = [];
-                yTickLabs.forEach( (d, i) => {
-                    let ref = {yIndex: flipYAxis ? (yNum - 1 - i) : i};
-                    ref[y] = d;
-
-                    yRef.push(ref);
-                });
-
-                // add these index references to the data
-                data = _data.map(d => {
-                    let indexedData = Object.assign(
-                        d,
-                        xRef.find(i => i[x] === d[x]),
-                        yRef.find(i => i[y] === d[y])
-                    );
-                    return indexedData;
-                });
-
+                processData(_data);
                 buildSVG(this);
                 buildAxes();
                 drawAxes();
@@ -125,6 +88,45 @@ export default function() {
                     buildLegend();
                     verticalLegend ? drawVerticalLegend() : drawHorizontalLegend();
                 }
+            });
+        }
+
+        function processData(_data) {
+            // get unique x and y values to create labels
+            xTickLabs = [...new Set(_data.map(d => d[x]))];
+            yTickLabs = [...new Set(_data.map(d => d[y]))];
+
+            xNum = xTickLabs.length;
+            yNum = yTickLabs.length;
+
+            width = xNum * tileWidth + margin.left + margin.right;
+            height = yNum * tileHeight + margin.top + margin.bottom;
+
+            // add x and y indexes to data to order/layout tiles
+            let xRef = [];
+            xTickLabs.forEach( (d, i) => {
+                let ref = {xIndex: i};
+                ref[x] = d;
+
+                xRef.push(ref);
+            });
+
+            let yRef = [];
+            yTickLabs.forEach( (d, i) => {
+                let ref = {yIndex: flipYAxis ? (yNum - 1 - i) : i};
+                ref[y] = d;
+
+                yRef.push(ref);
+            });
+
+            // add these index references to the data
+            data = _data.map(d => {
+                let indexedData = Object.assign(
+                    d,
+                    xRef.find(i => i[x] === d[x]),
+                    yRef.find(i => i[y] === d[y])
+                );
+                return indexedData;
             });
         }
 
