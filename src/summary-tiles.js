@@ -15,8 +15,8 @@ export default function() {
             palette,
             xTicks,
             yTicks,
-            tileWidth,
-            tileHeight,
+            width,
+            height,
             tiles,
             legendGroup,
             legendScale,
@@ -25,12 +25,11 @@ export default function() {
             x,
             y,
             fill,
-            width,
-            height,
+            tileWidth,
+            tileHeight,
             title = "",
             titleSize = 20,
             tickLabelSize = 12,
-            rowSpacing = 0,
             marginLeft = 200,
             marginBottom = 25,
             xLabel = null,
@@ -84,6 +83,9 @@ export default function() {
 
                 xNum = xTickLabs.length;
                 yNum = yTickLabs.length;
+
+                width = xNum * tileWidth + margin.left + margin.right;
+                height = yNum * tileHeight + margin.top + margin.bottom;
 
                 // add x and y indexes to data to order/layout tiles
                 let xRef = [];
@@ -154,7 +156,7 @@ export default function() {
         function drawAxes() {
             hm.append("g")
                 .classed("y axis", true)
-                .attr("transform", `translate(${margin.left}, ${-rowSpacing / 2})`)
+                .attr("transform", `translate(${margin.left}, 0)`)
                 .call(yAxis)
                 .append("text")
                 .attr("transform", "translate(-10, 0)")
@@ -166,7 +168,7 @@ export default function() {
 
             hm.append("g")
                 .classed("x axis", true)
-                .attr("transform", `translate(${margin.left}, ${height - margin.bottom - margin.top - rowSpacing})`)
+                .attr("transform", `translate(${margin.left}, ${height - margin.bottom - margin.top})`)
                 .call(xAxis)
                 .append("text")
                 .attr("transform", `translate(${(width - margin.left - margin.right) / 2}, ${margin.bottom * 2})`)
@@ -213,8 +215,6 @@ export default function() {
         }
 
         function drawTiles() {
-            tileWidth = (width - margin.left - margin.right) / xNum,
-            tileHeight = (height - margin.top - margin.bottom) / yNum;
 
             xTicks = d3.selectAll(".x .tick");
             yTicks = d3.selectAll(".y .tick");
@@ -249,7 +249,7 @@ export default function() {
                 .data(data)
                 .enter().append("rect")
                 .attr("x", d => tileWidth * (d.xIndex) + margin.left)
-                .attr("y", d => (tileHeight + rowSpacing) * (d.yIndex))
+                .attr("y", d => (tileHeight) * (d.yIndex))
                 .attr("rx", 1)
                 .attr("ry", 1)
                 .attr("width", tileWidth)
@@ -471,8 +471,8 @@ export default function() {
                     legendIndicator
                         .attr("cx", margin.left + legDim[0]/2)
                         .attr("cy", rotateXTicks ?
-                        (height + margin.bottom - rowSpacing + 120 + legDim[1]/2) :
-                        (height + margin.bottom - rowSpacing + legDim[1]/2));
+                        (height + margin.bottom + 120 + legDim[1]/2) :
+                        (height + margin.bottom + legDim[1]/2));
                 }
             }
         }
@@ -539,8 +539,8 @@ export default function() {
             legendGroup.append("rect")
                 .attr("x", margin.left)
                 .attr("y", rotateXTicks ?
-                    (height + margin.bottom - rowSpacing + 120) :
-                    (height + margin.bottom - rowSpacing))
+                    (height + margin.bottom + 120) :
+                    (height + margin.bottom))
                 .attr("width", legDim[0])
                 .attr("height", legDim[1])
                 .attr("fill", "url(#st_gradient)");
@@ -550,8 +550,8 @@ export default function() {
                 .text(legendTitle ? legendTitle : fill)
                 .attr("x", margin.left)
                 .attr("y", rotateXTicks ?
-                    (height + margin.bottom - rowSpacing - 7 + 120) :
-                    (height + margin.bottom - rowSpacing - 7))
+                    (height + margin.bottom - 7 + 120) :
+                    (height + margin.bottom - 7))
                 .style("font-size", "12px")
                 .style("font-weight", "600")
                 .attr("fill", fontColor);
@@ -561,8 +561,8 @@ export default function() {
                 .text(d3.format(numberFormat)(d3.min(fillDomain)))
                 .attr("x", margin.left)
                 .attr("y", rotateXTicks ?
-                    (height + margin.bottom - rowSpacing + 28 + 120) :
-                    (height + margin.bottom - rowSpacing + 28))
+                    (height + margin.bottom + 28 + 120) :
+                    (height + margin.bottom + 28))
                 .style("font-size", "11px")
                 .attr("fill", fontColor);
 
@@ -571,8 +571,8 @@ export default function() {
                 .text(d3.format(numberFormat)(d3.max(fillDomain)))
                 .attr("x", margin.left + legDim[0])
                 .attr("y", rotateXTicks ?
-                    (height + margin.bottom - rowSpacing + 28 + 120) :
-                    (height + margin.bottom - rowSpacing + 28))
+                    (height + margin.bottom + 28 + 120) :
+                    (height + margin.bottom + 28))
                 .style("font-size", "11px")
                 .attr("fill", fontColor);
         }
@@ -606,29 +606,29 @@ export default function() {
             return this;
         };
 
+        exports.tileWidth = function(_) {
+            if (!arguments.length) {
+                return tileWidth;
+            }
+            tileWidth = _;
+
+            return this;
+        };
+
+        exports.tileHeight = function(_) {
+            if (!arguments.length) {
+                return tileHeight;
+            }
+            tileHeight = _;
+
+            return this;
+        };
+
         exports.fillDomain = function(_) {
             if (!arguments.length) {
                 return fillDomain;
             }
             fillDomain = _;
-
-            return this;
-        };
-
-        exports.width = function(_) {
-            if (!arguments.length) {
-                return width;
-            }
-            width = _;
-
-            return this;
-        };
-
-        exports.height = function(_) {
-            if (!arguments.length) {
-                return height;
-            }
-            height = _;
 
             return this;
         };
@@ -656,15 +656,6 @@ export default function() {
                 return tickLabelSize;
             }
             tickLabelSize = _;
-
-            return this;
-        };
-
-        exports.rowSpacing = function(_) {
-            if (!arguments.length) {
-                return rowSpacing;
-            }
-            rowSpacing = _;
 
             return this;
         };
