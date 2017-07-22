@@ -211,4 +211,4 @@ Default is `" \u2014 "` (emdash). If *pairwiseJoinText* is specified, sets the t
 
 <a href="#numberFormat" name="numberFormat">#</a> *summaryTiles*.**numberFormat**([*numberFormat*])
 
-Default is `","`. If *numberFormat* is specified, sets the way numbers should be formatted when displaying them. See https://github.com/d3/d3-format/blob/master/README.md#locale_format for details and available formats. If *numberFormat* is not specified, returns the currently set formatting string.
+Default is `","`. If *numberFormat* is specified, sets the way numbers should be formatted when displaying them. See [d3-format](https://github.com/d3/d3-format/blob/master/README.md#locale_format) for details and available formats. If *numberFormat* is not specified, returns the currently set formatting string.
