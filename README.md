@@ -17,8 +17,9 @@ summaryTiles
     .tileWidth(40)
     .tileHeight(35);
 
-d3.select("body").datum(data)
-    call(summaryTiles);
+d3.select("body")
+    .datum(data)
+    .call(summaryTiles);
 ```
 
 ## Installing
