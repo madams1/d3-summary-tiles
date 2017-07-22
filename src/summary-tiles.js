@@ -47,13 +47,12 @@ export default function() {
             fontColor = "#333",
             unselectedColor = "#ccc",
             highlightColor = "#333",
-            nullColor = "#cacaca",
+            nullColor = "#bdbdbd",
             onClick = null,
             showTooltip = true,
             tooltipWidth = 180,
             wrapTooltip = false,
-            tooltipInfo = null,
-            nullValueTooltips = false,
+            noNullTooltips = false,
             pairwiseJoinText = " \u2014 ",
             numberFormat = ",";
 
@@ -68,6 +67,7 @@ export default function() {
 
         const margin = {
             top: 10,
+            bottom: 25,
             left: marginLeft,
             right: 10
         };
@@ -399,7 +399,7 @@ export default function() {
                             .attr("fill", "#eee");
 
                         this.tooltipGroup.append("text")
-                            .text(tooltipInfo ? d[tooltipInfo] : (d[y] + pairwiseJoinText + d[x]))
+                            .text(d[y] + pairwiseJoinText + d[x])
                             .style("font-size", 13)
                             .attr("text-anchor", "middle")
                             .attr("x", tooltipWidth/2)
@@ -409,7 +409,7 @@ export default function() {
 
                     this.tooltipGroup.style("opacity", 0)
                         .transition().delay(200).duration(200)
-                        .style("opacity", (d[fill] === null && !nullValueTooltips) ? 0 : 0.9);
+                        .style("opacity", (d[fill] === null && noNullTooltips) ? 0 : 0.9);
 
                 }
 
@@ -678,6 +678,15 @@ export default function() {
             return this;
         };
 
+        exports.yLabel = function(_) {
+            if (!arguments.length) {
+                return yLabel;
+            }
+            yLabel = _;
+
+            return this;
+        };
+
         exports.rotateXTicks = function() {
 
             rotateXTicks = true;
@@ -692,15 +701,6 @@ export default function() {
             return this;
         };
 
-        exports.yLabel = function(_) {
-            if (!arguments.length) {
-                return yLabel;
-            }
-            yLabel = _;
-
-            return this;
-        };
-
         exports.legendTitle = function(_) {
             if (!arguments.length) {
                 return legendTitle;
@@ -710,14 +710,14 @@ export default function() {
             return this;
         };
 
-        exports.hideLegend = function() {
+        exports.noLegend = function() {
 
             showLegend = false;
 
             return this;
         };
 
-        exports.hideLegendIndicator = function() {
+        exports.noLegendIndicator = function() {
 
             showLegendIndicator = false;
 
@@ -731,14 +731,14 @@ export default function() {
             return this;
         };
 
-        exports.hideXTicks = function() {
+        exports.noXTicks = function() {
 
             showXTicks = false;
 
             return this;
         };
 
-        exports.hideYTicks = function() {
+        exports.noYTicks = function() {
 
             showYTicks = false;
 
@@ -779,20 +779,20 @@ export default function() {
             return this;
         };
 
-        exports.unselectedColor = function(_) {
-            if (!arguments.length) {
-                return unselectedColor;
-            }
-            unselectedColor = _;
-
-            return this;
-        };
-
         exports.highlightColor = function(_) {
             if (!arguments.length) {
                 return highlightColor;
             }
             highlightColor = _;
+
+            return this;
+        };
+
+        exports.unselectedColor = function(_) {
+            if (!arguments.length) {
+                return unselectedColor;
+            }
+            unselectedColor = _;
 
             return this;
         };
@@ -815,7 +815,7 @@ export default function() {
             return this;
         };
 
-        exports.hideTooltip = function() {
+        exports.noTooltip = function() {
 
             showTooltip = false;
 
@@ -838,18 +838,9 @@ export default function() {
             return this;
         };
 
-        exports.tooltipInfo = function(_) {
-            if (!arguments.length) {
-                return tooltipInfo;
-            }
-            tooltipInfo = _;
+        exports.noNullTooltips = function() {
 
-            return this;
-        };
-
-        exports.nullValueTooltips = function() {
-
-            nullValueTooltips = true;
+            noNullTooltips = true;
 
             return this;
         };
