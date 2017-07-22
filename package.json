@@ -1,6 +1,6 @@
 {
   "name": "d3-summary-tiles",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Visualizing summarized data with colored tiles!",
   "keywords": [
     "d3",
