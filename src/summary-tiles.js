@@ -31,7 +31,6 @@ export default function() {
             titleSize = 20,
             tickLabelSize = 12,
             marginLeft = 200,
-            marginBottom = 25,
             xLabel = null,
             rotateXTicks = false,
             flipYAxis = false,
@@ -69,7 +68,6 @@ export default function() {
 
         const margin = {
             top: 10,
-            bottom: marginBottom,
             left: marginLeft,
             right: 10
         };
@@ -667,15 +665,6 @@ export default function() {
                 return marginLeft;
             }
             marginLeft = _;
-
-            return this;
-        };
-
-        exports.marginBottom = function(_) {
-            if (!arguments.length) {
-                return marginBottom;
-            }
-            marginBottom = _;
 
             return this;
         };
