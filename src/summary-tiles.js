@@ -30,7 +30,7 @@ export default function() {
             title = "",
             titleSize = 20,
             tickLabelSize = 12,
-            marginLeft = 200,
+            horizontalPadding = 100,
             xLabel = null,
             rotateXTicks = false,
             flipYAxis = false,
@@ -68,8 +68,8 @@ export default function() {
         const margin = {
             top: 10,
             bottom: 25,
-            left: marginLeft,
-            right: 10
+            left: horizontalPadding * 2,
+            right: 0
         };
 
         function exports(_selection) {
@@ -132,10 +132,10 @@ export default function() {
             hm = d3.select(container)
                 .style("width", width + (verticalLegend ? 50 : 0))
                 .append("svg")
-                .attr("width", width + (verticalLegend ? 50 : 0 + margin.right))
+                .attr("width", width + (verticalLegend ? 50 : 0))
                 .attr("height", rotateXTicks ? (height + 230) : (height + 110))
                 .append("g")
-                .attr("transform", `translate(${-margin.left / 4}, ${margin.bottom * 2})`);
+                .attr("transform", `translate(${-(margin.left/2 - margin.right)}, ${margin.bottom * 2})`);
         }
 
         function buildAxes() {
@@ -660,11 +660,11 @@ export default function() {
             return this;
         };
 
-        exports.marginLeft = function(_) {
+        exports.horizontalPadding = function(_) {
             if (!arguments.length) {
-                return marginLeft;
+                return horizontalPadding;
             }
-            marginLeft = _;
+            margin.left = _ * 2;
 
             return this;
         };

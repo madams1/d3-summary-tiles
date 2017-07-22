@@ -80,9 +80,9 @@ Default is `20`. If *titleSize* is specified, sets the font size used for the ch
 
 Default is `12`. If *tickLabelSize* is specified, sets the font size used for the x and y axis tick labels. If *tickLabelSize* is not specified, returns the currently set tick label font size.
 
-<a href="#marginLeft" name="marginLeft">#</a> *summaryTiles*.**marginLeft**([*marginLeft*])
+<a href="#horizontalPadding" name="horizontalPadding">#</a> *summaryTiles*.**horizontalPadding**([*horizontalPadding*])
 
-Default is `200`. If *marginLeft* is specified, sets the size in pixels of the left-hand-side margin. The space is used for labeling the y-axis and the y tick labels. If *marginLeft* is not specified, returns the currently set margin size.
+Default is `100`. If *horizontalPadding* is specified, sets the size in pixels used to pad the tiles on each side. The space is used primarily for labeling the y-axis and the y tick labels. If *horizontalPadding* is not specified, returns the currently set padding.
 
 <a href="#xLabel" name="xLabel">#</a> *summaryTiles*.**xLabel**([*xLabel*])
 
