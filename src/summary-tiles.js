@@ -94,6 +94,7 @@ export default function() {
                 // what to do after getting new data
                 updateData = function() {
                     buildColorScales();
+                    drawTitle();
                     drawTiles();
                     if (showLegend) {
                         rescaleLegend();
@@ -209,6 +210,7 @@ export default function() {
         }
 
         function drawTitle() {
+            d3.select("#st-title").remove();
             hm.append("text")
                 .attr("transform", `translate(${(width + margin.left - margin.right) / 2}, ${-margin.bottom})`)
                 .attr("text-anchor", "middle")
@@ -216,13 +218,17 @@ export default function() {
                 .style("font-size", titleSize)
                 .style("font-weight", 800)
                 .attr("fill", fontColor)
-                .attr("id", "st-title");
+                .attr("id", "st-title")
+                .style("opacity", 0)
+                .transition()
+                .duration(500)
+                .style("opacity", 1);
         }
 
         updateTitle = function() {
             d3.select("#st-title")
                 .text(title);
-        };
+        }
 
         function buildColorScales() {
             let colorInterpolator = d3[`interpolate${colorScheme}`];
