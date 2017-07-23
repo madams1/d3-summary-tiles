@@ -306,13 +306,13 @@ export default function() {
                     legendIndicator
                         .moveToFront()
                         .transition().duration(200)
-                        .style("opacity", d[fill] ? 1 : 0)
+                        .style("opacity", typeof(d[fill]) === "number" ? 1 : 0)
                         .attr("cy", (margin.top + 20 + 9 + legendScale(d[fill])));
                 } else {
                     legendIndicator
                         .moveToFront()
                         .transition().duration(200)
-                        .style("opacity", d[fill] ? 1 : 0)
+                        .style("opacity", typeof(d[fill]) === "number" ? 1 : 0)
                         .attr("cx", (margin.left + legendScale(d[fill])));
                 }
 
