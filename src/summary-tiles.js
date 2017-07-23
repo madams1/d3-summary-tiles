@@ -98,6 +98,7 @@ export default function() {
                     buildColorScales();
                     drawTitle();
                     drawTiles();
+                    blockTileMouseEvents();
                     if (showLegend) {
                         scaleLegend();
                         verticalLegend ? drawVerticalLegendNumbers() : drawHorizontalLegendNumbers();
@@ -485,6 +486,24 @@ export default function() {
                     drawTiles();
                     createTileMouseEvents();
                 });
+
+        }
+
+        function blockTileMouseEvents() {
+
+            // used when updating with new data to
+            // temporarily block mouse events
+            // on the transitioning tiles
+            d3.select(".tiles")
+                .style("pointer-events", "none");
+
+            setTimeout(
+                function() {
+                    d3.select(".tiles")
+                        .style("pointer-events", "auto");
+                },
+                800
+            );
 
         }
 
