@@ -78,6 +78,7 @@ export default function() {
 
         function exports(_selection) {
             _selection.each(function() {
+                // initial setup and drawing
                 processData(data);
                 buildSVG(this);
                 buildAxes();
@@ -88,7 +89,8 @@ export default function() {
                 drawTiles();
                 createTileMouseEvents();
                 if (showLegend) {
-                    buildLegend();
+                    buildLegendArea();
+                    scaleLegend();
                     verticalLegend ? drawVerticalLegend() : drawHorizontalLegend();
                 }
                 // what to do after getting new data
@@ -97,9 +99,8 @@ export default function() {
                     drawTitle();
                     drawTiles();
                     if (showLegend) {
-                        rescaleLegend();
-                        buildLegend();
-                        verticalLegend ? drawVerticalLegend() : drawHorizontalLegend();
+                        scaleLegend();
+                        verticalLegend ? drawVerticalLegendNumbers() : drawHorizontalLegendNumbers();
                     }
                 };
             });
@@ -292,7 +293,6 @@ export default function() {
                 .merge(dataRects)
                 .transition().duration(800)
                 .style("fill", d => d[fill] === null ? nullColor : colorScale(d[fill]));
-
         }
 
         function createTileMouseEvents() {
@@ -488,21 +488,32 @@ export default function() {
 
         }
 
-        function buildLegend() {
+        function buildLegendArea() {
 
             legendGroup = hm.append("g")
                 .classed("st_legend", true);
+
+            if (showLegendIndicator) {
+
+                legendIndicator = legendGroup.append("circle")
+                        .attr("r", 3)
+                        .attr("fill", "white")
+                        .attr("stroke", "black")
+                        .style("opacity", 0);
+
+            }
+
+        }
+
+        function scaleLegend() {
+
+            d3.select(legendIndicator).remove();
 
             legendScale = d3.scaleLinear()
                 .domain(reverseColorScale ? (verticalLegend ? fillDomain : fillDomain.reverse()) : fillDomain)
                 .range([0, legDim[0]]);
 
             if (showLegendIndicator) {
-                legendIndicator = legendGroup.append("circle")
-                        .attr("r", 3)
-                        .attr("fill", "white")
-                        .attr("stroke", "black")
-                        .style("opacity", 0);
 
                 if (verticalLegend) {
                     legendIndicator
@@ -518,16 +529,41 @@ export default function() {
             }
         }
 
-        function rescaleLegend() {
+        function drawVerticalLegendNumbers() {
+
             d3.selectAll(".st-legend-number")
-                .transition()
-                .duration(250)
+                .remove();
+
+            legendGroup.append("text")
+                .attr("text-anchor", "start")
+                .text(d3.format(numberFormat)(d3.max(fillDomain)))
+                .attr("x", width + 33)
+                .attr("y", margin.top + 15 + 20)
+                .style("font-size", "11px")
                 .style("opacity", 0)
-                .transition();
-            d3.select(".st_legend").remove();
+                .attr("fill", fontColor)
+                .classed("st-legend-number", true)
+                .transition()
+                .duration(500)
+                .style("opacity", 1);
+
+            legendGroup.append("text")
+                .attr("text-anchor", "start")
+                .text(d3.format(numberFormat)(d3.min(fillDomain)))
+                .attr("x", width + 33)
+                .attr("y", margin.top + legDim[0] + 9 + 20)
+                .style("font-size", "11px")
+                .style("opacity", 0)
+                .attr("fill", fontColor)
+                .classed("st-legend-number", true)
+                .transition()
+                .duration(500)
+                .style("opacity", 1);
+
         }
 
         function drawVerticalLegend() {
+
             let legend = legendGroup.append("defs")
                     .append("linearGradient")
                     .attr("id", "st_gradient")
@@ -558,26 +594,48 @@ export default function() {
                     .style("font-weight", "600")
                     .attr("fill", fontColor);
 
-                legendGroup.append("text")
-                    .attr("text-anchor", "start")
-                    .text(d3.format(numberFormat)(d3.max(fillDomain)))
-                    .attr("x", width + 33)
-                    .attr("y", margin.top + 15 + 20)
-                    .style("font-size", "11px")
-                    .attr("fill", fontColor)
-                    .classed("st-legend-number", true);
+                drawVerticalLegendNumbers();
+        }
 
-                legendGroup.append("text")
-                    .attr("text-anchor", "start")
-                    .text(d3.format(numberFormat)(d3.min(fillDomain)))
-                    .attr("x", width + 33)
-                    .attr("y", margin.top + legDim[0] + 9 + 20)
-                    .style("font-size", "11px")
-                    .attr("fill", fontColor)
-                    .classed("st-legend-number", true);
+        function drawHorizontalLegendNumbers() {
+
+            d3.selectAll(".st-legend-number")
+                .remove();
+
+            legendGroup.append("text")
+                .attr("text-anchor", "middle")
+                .text(d3.format(numberFormat)(d3.min(fillDomain)))
+                .attr("x", margin.left)
+                .attr("y", rotateXTicks ?
+                    (height + margin.bottom + 28 + 120) :
+                    (height + margin.bottom + 28))
+                .style("font-size", "11px")
+                .style("opacity", 0)
+                .attr("fill", fontColor)
+                .classed("st-legend-number", true)
+                .transition()
+                .duration(500)
+                .style("opacity", 1);
+
+            legendGroup.append("text")
+                .attr("text-anchor", "middle")
+                .text(d3.format(numberFormat)(d3.max(fillDomain)))
+                .attr("x", margin.left + legDim[0])
+                .attr("y", rotateXTicks ?
+                    (height + margin.bottom + 28 + 120) :
+                    (height + margin.bottom + 28))
+                .style("font-size", "11px")
+                .style("opacity", 0)
+                .attr("fill", fontColor)
+                .classed("st-legend-number", true)
+                .transition()
+                .duration(500)
+                .style("opacity", 1);
+
         }
 
         function drawHorizontalLegend() {
+
             let legend = legendGroup.append("defs")
                 .append("linearGradient")
                 .attr("id", "st_gradient");
@@ -608,27 +666,7 @@ export default function() {
                 .style("font-weight", "600")
                 .attr("fill", fontColor);
 
-            legendGroup.append("text")
-                .attr("text-anchor", "middle")
-                .text(d3.format(numberFormat)(d3.min(fillDomain)))
-                .attr("x", margin.left)
-                .attr("y", rotateXTicks ?
-                    (height + margin.bottom + 28 + 120) :
-                    (height + margin.bottom + 28))
-                .style("font-size", "11px")
-                .attr("fill", fontColor)
-                .classed("st-legend-number", true);
-
-            legendGroup.append("text")
-                .attr("text-anchor", "middle")
-                .text(d3.format(numberFormat)(d3.max(fillDomain)))
-                .attr("x", margin.left + legDim[0])
-                .attr("y", rotateXTicks ?
-                    (height + margin.bottom + 28 + 120) :
-                    (height + margin.bottom + 28))
-                .style("font-size", "11px")
-                .attr("fill", fontColor)
-                .classed("st-legend-number", true);
+            drawHorizontalLegendNumbers();
         }
 
         // API methods - get or set properties
