@@ -12,6 +12,7 @@ export default function() {
             yAxis,
             colorScale,
             fillDomain,
+            initialFillDomain,
             palette,
             xTicks,
             yTicks,
@@ -235,7 +236,7 @@ export default function() {
         function buildColorScales() {
             let colorInterpolator = d3[`interpolate${colorScheme}`];
 
-            fillDomain = d3.extent(data.map(d => d[fill]));
+            fillDomain = initialFillDomain ? initialFillDomain : d3.extent(data.map(d => d[fill]));
 
             colorScale = d3.scaleSequential(colorInterpolator)
                 .domain(reverseColorScale ? fillDomain.reverse() : fillDomain);
@@ -746,9 +747,9 @@ export default function() {
 
         exports.fillDomain = function(_) {
             if (!arguments.length) {
-                return fillDomain;
+                return initialFillDomain;
             }
-            fillDomain = _;
+            initialFillDomain = _;
 
             return this;
         };
