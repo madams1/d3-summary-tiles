@@ -11,6 +11,7 @@ Source: [City of Orlando Open Data](https://data.cityoforlando.net/Orlando-Polic
 let summaryTiles = d3.summaryTiles();
 
 summaryTiles
+    .data(data)
     .x("x")
     .y("y")
     .fill("fill")
@@ -18,7 +19,6 @@ summaryTiles
     .tileHeight(35);
 
 d3.select("body")
-    .datum(data)
     .call(summaryTiles);
 ```
 
@@ -43,7 +43,11 @@ let summaryTiles = d3.summaryTiles();
 
 <a href="#summaryTiles" name="summaryTiles">#</a> <b>summaryTiles</b>(*_selection*)
 
-*_selection* is a d3 selection with data attached to it. (e.g. `d3.select("body").datum(data)`). *Note*: The selection itself depends on [d3-selection](https://github.com/d3/d3-selection), so you'll need to include that separately. If you installed `d3-summary-tiles` with NPM, `d3-selection` is an included dependency.
+*_selection* is a d3 selection. (e.g. `d3.select("body")`). *Note*: The selection itself depends on [d3-selection](https://github.com/d3/d3-selection), so you'll need to include that separately. If you installed `d3-summary-tiles` with NPM, `d3-selection` is an included dependency.
+
+<a href="#data" name="data">#</a> *summaryTiles*.**data**([*data*])
+
+No default value. If *data* is specified, sets (or resets) the data to use. If *data* is not specified (and has already been specified), returns the currently set data being used.
 
 <a href="#x" name="x">#</a> *summaryTiles*.**x**([*x*])
 
@@ -71,7 +75,7 @@ Default is `d3.extent(data, d => d[summaryTiles.fill()])`. Useful if your data d
 
 <a href="#title" name="title">#</a> *summaryTiles*.**title**([*title*])
 
-Default is `""`. If *title* is specified, sets the chart title to the given string. If *title* is not specified, returns the currently set title.
+Default is `""`. If *title* is specified, sets (or resets) the chart title to the given string. If *title* is not specified, returns the currently set title.
 
 <a href="#titleSize" name="titleSize">#</a> *summaryTiles*.**titleSize**([*titleSize*])
 
