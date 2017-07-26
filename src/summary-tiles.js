@@ -61,13 +61,6 @@ export default function() {
             pairwiseJoinText = " \u2014 ",
             numberFormat = ",";
 
-        // move DOM node to front
-        d3.selection.prototype.moveToFront = function() {
-            return this.each(function() {
-              this.parentNode.appendChild(this);
-            });
-        };
-
         const legDim = [150, 15];
 
         const margin = {
@@ -99,6 +92,7 @@ export default function() {
                     buildColorScales();
                     drawTitle();
                     drawTiles();
+                    createTileMouseEvents();
                     blockTileMouseEvents();
                     if (showLegend) {
                         scaleLegend();
@@ -274,7 +268,25 @@ export default function() {
                 .classed("tiles", true);
         }
 
+        function tileComparator(a, b) {
+            return a.yIndex < b.yIndex
+                ? -1
+                : a.yIndex > b.yIndex
+                    ? 1
+                    : a.yIndex == b.yIndex
+                        ? a.xIndex < b.xIndex
+                            ? -1
+                            : a.xIndex > b.xIndex
+                                ? 1
+                                : a.xIndex >= b.xIndex
+                                    ? 0
+                                    : NaN
+                        : NaN;
+        }
+
         function drawTiles() {
+
+            d3.select(".tiles").selectAll("rect").sort(tileComparator);
 
             // place tiles on chart
             dataRects = d3.select(".tiles").selectAll("rect").data(data);
@@ -306,13 +318,13 @@ export default function() {
                 // change legend indicator position
                 if (verticalLegend) {
                     legendIndicator
-                        .moveToFront()
+                        .raise()
                         .transition().duration(200)
                         .style("opacity", typeof(d[fill]) === "number" ? 1 : 0)
                         .attr("cy", (margin.top + 20 + 9 + legendScale(d[fill])));
                 } else {
                     legendIndicator
-                        .moveToFront()
+                        .raise()
                         .transition().duration(200)
                         .style("opacity", typeof(d[fill]) === "number" ? 1 : 0)
                         .attr("cx", (margin.left + legendScale(d[fill])));
@@ -320,7 +332,7 @@ export default function() {
 
                 // highlight this tile
                 thisTile
-                    .moveToFront()
+                    .raise()
                     .style("stroke", highlightColor)
                     .attr("stroke-width", 2.5)
                     .transition().duration(100)
@@ -482,10 +494,6 @@ export default function() {
                         .transition().duration(200)
                         .style("opacity", 0);
 
-                    d3.select(this).remove();
-                    buildTileArea();
-                    drawTiles();
-                    createTileMouseEvents();
                 });
 
         }
