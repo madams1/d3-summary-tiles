@@ -286,12 +286,14 @@ export default function() {
 
         function drawTiles() {
 
-            d3.select(".tiles").selectAll("rect").sort(tileComparator);
+            // re-sort the tiles in the DOM based on the data's x and y indexes
+            d3.selectAll(".st-tile").sort(tileComparator);
 
             // place tiles on chart
             dataRects = d3.select(".tiles").selectAll("rect").data(data);
 
             tiles = dataRects.enter().append("rect")
+                .classed("st-tile", true)
                 .attr("x", d => tileWidth * (d.xIndex) + margin.left)
                 .attr("y", d => (tileHeight) * (d.yIndex))
                 .attr("rx", 1)
